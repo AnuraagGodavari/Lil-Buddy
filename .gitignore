@@ -1,0 +1,5 @@
+token.txt
+watch_statuses.json
+
+**/__pycache__/**
+*.pyc
