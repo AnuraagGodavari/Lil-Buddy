@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv
 import json
 
 import discord
@@ -70,9 +72,10 @@ async def on_member_update(before, after):
 		await statusChannel.send(f"<@{after.id}> new status:\n> {after.activity}")
 
 def main():
-	with open("token.txt", 'r') as tokenF:
-		token = tokenF.read()
-
+	
+	load_dotenv()
+	token = os.getenv('TOKEN')
+	
 	lilbuddy.run(token)
 
 if __name__ == "__main__":
