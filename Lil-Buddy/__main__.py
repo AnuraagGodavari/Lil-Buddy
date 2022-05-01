@@ -19,9 +19,6 @@ def can_singleTrigger(user):
 	with open("watch_statuses.json") as f:
 		watch_statuses = json.load(f)
 		
-		
-	print(f"!!! {[role.id for role in user.roles if role.id == watch_statuses[str(user.id)]['singleEventTrigger_id']]}")
-		
 	return next((role for role in user.roles if role.id == watch_statuses[str(user.id)]["singleEventTrigger_id"]), False)
 
 def watchingForStatus(user, oldActivity, newActivity):
@@ -70,13 +67,12 @@ async def on_member_update(before, after):
 	
 	if (statusChannel_id and after.activity):
 		statusChannel = lilbuddy.get_channel(statusChannel_id)
-		await statusChannel.send(f"{} new status:\n> {after.activity}")
+		await statusChannel.send(f"<@{after.id}> new status:\n> {after.activity}")
 
 def main():
 	with open("token.txt", 'r') as tokenF:
 		token = tokenF.read()
 
-	client.run(token)
 	lilbuddy.run(token)
 
 if __name__ == "__main__":
