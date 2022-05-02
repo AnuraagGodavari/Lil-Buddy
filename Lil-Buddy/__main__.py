@@ -71,6 +71,10 @@ async def on_member_update(before, after):
 		statusChannel = lilbuddy.get_channel(statusChannel_id)
 		await statusChannel.send(f"<@{after.id}> new status:\n> {after.activity}")
 
+@lilbuddy.command()
+async def ping(ctx):
+  await ctx.send(f"Pong!\nLatency: **{round(lilbuddy.latency * 1000)}ms**")
+
 def main():
 	
 	load_dotenv()
