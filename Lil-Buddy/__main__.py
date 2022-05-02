@@ -73,7 +73,7 @@ async def on_member_update(before, after):
 
 @lilbuddy.command()
 async def ping(ctx):
-  await ctx.send(f"Pong!\nLatency: **{round(lilbuddy.latency * 1000)}ms**")
+	await ctx.send(f"Pong!\nLatency: **{round(lilbuddy.latency * 1000)}ms**")
 
 def main():
 	
