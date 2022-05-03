@@ -5,6 +5,9 @@ import json
 import discord
 from discord.ext import commands
 
+dir = os.path.dirname(__file__) + "/"
+watch_statuses_file = f"{dir}watch_statuses.json"
+
 #The bot
 lilbuddy = commands.Bot(command_prefix = 'lb.', intents = discord.Intents().all())
 
@@ -18,7 +21,7 @@ def can_singleTrigger(user):
 		user (Member): the person to check if we can singleTrigger.
 	"""
 	
-	with open("watch_statuses.json") as f:
+	with open(watch_statuses_file) as f:
 		watch_statuses = json.load(f)
 		
 	return next((role for role in user.roles if role.id == watch_statuses[str(user.id)]["singleEventTrigger_id"]), False)
@@ -37,7 +40,7 @@ def watchingForStatus(user, oldActivity, newActivity):
 		False (bool) if one of the conditions is not met
 	"""
 	
-	with open("watch_statuses.json") as f:
+	with open(watch_statuses_file) as f:
 		watch_statuses = json.load(f)
 		
 	if str(user.id) in watch_statuses.keys():
