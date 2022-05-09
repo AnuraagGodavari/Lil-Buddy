@@ -25,6 +25,8 @@ def can_singleTrigger(user):
 
 	watch_statuses = get_watchStatuses()
 
+	if (str(user.id) not in watch_statuses.keys()): return False
+	
 	return next((role for role in user.roles if role.id == watch_statuses[str(user.id)]["singleEventTrigger_id"]), False)
 
 def watchingForStatus(user, oldActivity, newActivity):
