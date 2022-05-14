@@ -20,7 +20,7 @@ After=multi-user.target
 Type=simple
 Restart=always
 
-ExecStart=/home/anuraag/miniconda3/envs/env_LilBuddy/bin/python3 /home/anuraag/DiscordBots/Lil-Buddy/Lil-Buddy
+ExecStart=/home/anuraag/Programs/miniconda3/envs/env_LilBuddy/bin/python3 /home/anuraag/DiscordBots/Lil-Buddy/Lil-Buddy
 
 [Install]
 WantedBy=multi-user.target"
