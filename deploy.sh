@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # Update repos
+
 sudo apt update
 
 # Do full upgrade of system
 sudo apt full-upgrade -y
 
 # Remove leftover packages and purge configs
-sudo apt autoremove
-#sudo apt autoremove -y --purge
+sudo apt autoremove -y --purge
 
 #Declare text which defines the lilbuddy service
 pwd=`pwd`
