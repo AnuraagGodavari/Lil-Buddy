@@ -15,9 +15,7 @@ class WatchStatus(commands.Cog):
 	def __init__(self, client):
 		self.client = client
 
-	#Utility functions
-
-	def get_watchStatuses(self, user_id): 
+	def get_lastStatus(self, user_id): 
 		cursor = getdb().cursor()
 
 		stmt = "SELECT status FROM Statuses WHERE user_id=%s ORDER BY created DESC LIMIT 1;"
@@ -28,10 +26,16 @@ class WatchStatus(commands.Cog):
 		if (result == None): return False
 		return result[0]
 
-	def save_watchStatuses(self, new_watchStatuses): 
-		with open(watch_statuses_file, 'w') as f: json.dump(new_watchStatuses, f, indent = 4) 
+	def save_status(self, user_id, new_status): 
+		db = getdb()
+		cursor = db.cursor()
+		
+		stmt = "INSERT INTO Statuses (user_id, status) VALUES (%s, %s);"
+		params = [user_id, new_status]
+		cursor.execute(stmt, params)
+		db.commit()
 
-	def watchingForStatus(self, user, oldActivity, newActivity):
+	def checkStatus(self, user, oldActivity, newActivity):
 		"""
 		Checks if we are watching a user and if said user has changed their activity (custom status).
 
@@ -41,7 +45,7 @@ class WatchStatus(commands.Cog):
 			newActivity (str): The activity of the user after the change detected by the bot
 
 		Returns:
-			A channel ID (int) if we are watching the user and their activity has changed.
+			A discord channel (GuildChannel) if we are watching the user and their activity has changed.
 			False (bool) if one of the conditions is not met
 		"""
 
@@ -61,19 +65,13 @@ class WatchStatus(commands.Cog):
 		if (user.guild != status_channel.guild):
 			return False
 
-		watch_status = self.get_watchStatuses(user.id)
-		print(watch_status)
-		return False
+		watch_status = self.get_lastStatus(user.id)
 
 		if watch_status:
 
 			#If newActivity is different from both oldActivity and the last saved status
-			if ((oldActivity != newActivity) and (watch_statuses[str(user.id)]["lastStatus"] != newActivity)): 
-
-				watch_statuses[str(user.id)]["lastStatus"] = newActivity
-				save_watchStatuses(watch_statuses)
-
-				return watch_statuses[str(user.id)]["channel"]
+			if ((oldActivity != newActivity) and (watch_status != newActivity)): 
+				return status_channel
 
 		return False
 
@@ -89,11 +87,11 @@ class WatchStatus(commands.Cog):
 
 		if not (after.activity): return
 
-		statusChannel_id = self.watchingForStatus(before, str(before.activity), str(after.activity))
+		statusChannel = self.checkStatus(before, str(before.activity), str(after.activity))
 
-		if (statusChannel_id):
-			statusChannel = self.client.get_channel(statusChannel_id)
+		if (statusChannel):
 			await statusChannel.send(f"> {after.activity}")
+			self.save_status(after.id, str(after.activity))
 			
 	@commands.command()
 	async def ping_WatchStatus(self, ctx):
