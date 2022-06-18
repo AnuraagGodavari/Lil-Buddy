@@ -6,6 +6,7 @@ import discord
 from discord.ext import commands
 
 from common import *
+from database import *
 
 #The bot
 lilbuddy = commands.Bot(command_prefix = 'lb.', intents = discord.Intents().all())
