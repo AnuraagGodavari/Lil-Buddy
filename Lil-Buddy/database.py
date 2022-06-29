@@ -20,10 +20,11 @@ def getdb():
 
 		try:
 			connection = mariadb.connect(user=db_user, password=db_pass, host=db_host, port=db_port, database=db_name)
+			mariadb_connection = connection
 
 		except mariadb.Error as e:
 			print(f"Error connecting to MariaDB Platform: {e}")
-			
-		mariadb_connection = connection
+			return
 
 	return mariadb_connection
+
