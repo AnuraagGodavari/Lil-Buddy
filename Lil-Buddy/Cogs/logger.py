@@ -47,7 +47,7 @@ class Logger(commands.Cog):
 			print(f"Above error has been saved with code <{errorTime}>")
 				
 		except: 
-			with open(f"ErrorLogs/DEEPERROR_{errorTime}.json", 'w') as f:
+			with open(f"{logs_dir}/DEEPERROR_{errorTime}.json", 'w') as f:
 				f.write("THE FOLLOWING ERROR HAS NOT BEEN HANDLED PROPERLY:\n")
 				f.write(str(errorData))
 				f.close()
