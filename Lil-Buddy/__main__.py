@@ -15,7 +15,6 @@ lilbuddy = commands.Bot(command_prefix = 'lb.', intents = discord.Intents().all(
 @lilbuddy.event
 async def on_ready():
 	""" Detects when the bot has been fully loaded and is online """
-	
 	print("Bot ready!")
 
 @lilbuddy.command()

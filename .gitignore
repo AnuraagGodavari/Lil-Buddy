@@ -3,3 +3,5 @@ watch_statuses.json
 
 **/__pycache__/**
 *.pyc
+
+**/ErrorLogs/**
