@@ -10,17 +10,25 @@ sudo apt full-upgrade -y
 sudo apt autoremove
 #sudo apt autoremove -y --purge
 
-#Create .env file
-env="
-TOKEN=
+#Create .env file if not exists
+if [ ! -f ".env" ] ; then
+    env="
+    TOKEN=
 
-DB_USER=
-DB_PASS=
-DB_HOST=
-DB_DATABASE=
-DB_PORT="
+    DB_USER=
+    DB_PASS=
+    DB_HOST=
+    DB_DATABASE=
+    DB_PORT="
 
-echo "$env" > .env
+    echo "$env" > .env
+
+    echo "Please fill out the information in the newly created .env file before proceeding."
+
+    exit
+
+#Build the docker image
+sudo docker build -t lilbuddy .
 
 #Declare text which defines the lilbuddy service
 pwd=`pwd`
@@ -32,17 +40,18 @@ After=multi-user.target
 Type=simple
 Restart=always
 
-ExecStart=python3 $pwd/Lil-Buddy
+ExecStart=/usr/bin/sudo docker run lilbuddy
 
 [Install]
 WantedBy=multi-user.target"
 
+#Create the service
 echo "$lilbuddy" > lilbuddy.service
 
 sudo cp lilbuddy.service /etc/systemd/system/
 sudo systemctl start lilbuddy.service
 sudo systemctl enable lilbuddy.service
-sudo systemctl stop lilbuddy.service
+
 rm lilbuddy.service
 
-echo "Created service. Please fill information in the newly created .env file, then run the command \"sudo systemctl start lilbuddy.service\"."
+echo "Successfully created lil-buddy service!"
