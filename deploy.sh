@@ -32,7 +32,7 @@ After=multi-user.target
 Type=simple
 Restart=always
 
-ExecStart=python3 $pwd
+ExecStart=python3 $pwd/Lil-Buddy
 
 [Install]
 WantedBy=multi-user.target"
