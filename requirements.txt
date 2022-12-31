@@ -1,0 +1,4 @@
+pillow
+mysql-connector-python
+discord.py
+python-dotenv
