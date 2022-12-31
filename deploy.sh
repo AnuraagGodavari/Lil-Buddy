@@ -27,6 +27,8 @@ if [ ! -f ".env" ] ; then
 
     exit
 
+fi
+
 #Build the docker image
 sudo docker build -t lilbuddy .
 
