@@ -42,7 +42,8 @@ After=multi-user.target
 Type=simple
 Restart=always
 
-ExecStart=/usr/bin/sudo docker run lilbuddy
+ExecStart=/usr/bin/docker run --name lilbuddy --rm lilbuddy
+ExecStop=-/usr/bin/docker stop lilbuddy
 
 [Install]
 WantedBy=multi-user.target"
@@ -53,6 +54,8 @@ echo "$lilbuddy" > lilbuddy.service
 sudo cp lilbuddy.service /etc/systemd/system/
 sudo systemctl start lilbuddy.service
 sudo systemctl enable lilbuddy.service
+
+sudo systemctl daemon-reload
 
 rm lilbuddy.service
 
