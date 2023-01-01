@@ -105,5 +105,5 @@ class Logger(commands.Cog):
 		await ctx.send("Testing error logging...")
 		raise Exception("Testing error logging!")
 		
-def setup(client):
-	client.add_cog(Logger(client))
+async def setup(client):
+	await client.add_cog(Logger(client))

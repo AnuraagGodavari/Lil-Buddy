@@ -1,4 +1,4 @@
-import os
+import os, asyncio
 from dotenv import load_dotenv
 import json
 
@@ -30,16 +30,19 @@ async def unload(ctx, cog):
 async def ping(ctx):
 	await ctx.send(f"Pong!\nLatency: **{round(lilbuddy.latency * 1000)}ms**")
 
+async def setup():
+	
+	for filename in os.listdir(f"{pwdir}/Cogs"):
+		if filename.endswith(".py"):
+			await lilbuddy.load_extension(f"Cogs.{filename[:-3]}")
+
 def main():
 	
 	load_dotenv()
 	token = os.getenv('TOKEN')
 	
-	for filename in os.listdir(f"{pwdir}/Cogs"):
-		if filename.endswith(".py"):
-			lilbuddy.load_extension(f"Cogs.{filename[:-3]}")
-	
 	lilbuddy.run(token)
 
 if __name__ == "__main__":
+	asyncio.run(setup())
 	main()
