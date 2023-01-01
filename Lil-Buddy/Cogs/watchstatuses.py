@@ -97,5 +97,5 @@ class WatchStatus(commands.Cog):
     async def ping_WatchStatus(self, ctx):
         await ctx.send(f"Pong_WatchStatus!\nLatency: **{round(self.client.latency * 1000)}ms**")
         
-def setup(client):
-    client.add_cog(WatchStatus(client))
+async def setup(client):
+    await client.add_cog(WatchStatus(client))
