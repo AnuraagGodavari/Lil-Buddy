@@ -76,8 +76,28 @@ class WatchStatus(commands.Cog):
         return False
 
     @commands.Cog.listener()
-    async def on_member_update(self, before, after):
+    async def on_presence_update(self, before, after):
         """
+        Checks if a member has changed their profile.
+
+        Args:
+            before (Member): the member's old info
+            after (Member): the member's new info
+        """
+
+        if not (after.activity): return
+
+        statusChannel = self.checkStatus(before, str(before.activity), str(after.activity))
+
+        if (statusChannel):
+            await statusChannel.send(f"> {after.activity}")
+            self.save_status(after.id, str(after.activity))
+
+    @commands.Cog.listener()
+    async def on_presence_update(self, before, after):
+        """
+        IMPORTANT: This is for pre-discord 2.0, where this function tracked the same things as on_presence_update() does now.
+        
         Checks if a member has changed their profile.
 
         Args:
