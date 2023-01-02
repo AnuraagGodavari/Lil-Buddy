@@ -6,9 +6,6 @@ from discord.ext import commands
 from common import *
 from database import *
 
-
-#The cog itself
-
 class WatchStatus(commands.Cog):
     """ A cog that allows its client bot to watch member statuses """
     

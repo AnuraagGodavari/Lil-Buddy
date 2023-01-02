@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # Update repos
+
 sudo apt update
 
 # Do full upgrade of system
 sudo apt full-upgrade -y
 
 # Remove leftover packages and purge configs
-sudo apt autoremove
-#sudo apt autoremove -y --purge
+sudo apt autoremove -y --purge
 
 #Create .env file if not exists
 if [ ! -f ".env" ] ; then
