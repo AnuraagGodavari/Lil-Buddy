@@ -13,4 +13,4 @@ RUN pip install -r requirements.txt
 COPY ./Lil-Buddy ./Lil-Buddy
 
 #Command to run the bot
-CMD ["python3", "./Lil-Buddy/"]
+CMD ["python3", "-u", "./Lil-Buddy/"]
