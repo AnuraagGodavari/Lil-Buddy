@@ -1,6 +1,6 @@
 import os
 
 #Filenames
-pwdir = os.path.dirname(__file__)
-watch_statuses_file = f"{pwdir}/watch_statuses.json"
-logs_dir = f"{pwdir}/ErrorLogs"
+pwdir = f"{os.path.dirname(__file__)}/.."
+
+cogsDir = f"{pwdir}/Lil-Buddy/Cogs"
