@@ -5,6 +5,7 @@ from discord.ext import commands
 
 from common import *
 from database import *
+from VakLogger import *
 
 
 #The cog itself
@@ -58,6 +59,7 @@ class WatchStatus(commands.Cog):
         status_channel_id = cursor.fetchone()
 
         if (status_channel_id == None): return False
+        logInfo(f"Watched user {user.id} changed their activity")
         status_channel_id = status_channel_id[0]
         
         #Check if this is the right server
@@ -87,11 +89,17 @@ class WatchStatus(commands.Cog):
 
         if not (after.activity): return
 
-        statusChannel = self.checkStatus(before, str(before.activity), str(after.activity))
+        try:
+            statusChannel = self.checkStatus(before, str(before.activity), str(after.activity))
 
-        if (statusChannel):
-            await statusChannel.send(f"> {after.activity}")
-            self.save_status(after.id, str(after.activity))
+            if (statusChannel):
+                logInfo(f"Watched user {after.id} New Status: \"{after.activity}\"")
+                await statusChannel.send(f"> {after.activity}")
+                self.save_status(after.id, str(after.activity))
+        
+        except Exception as e:
+            logInfo(f"Something went wrong when checking {after.id} status")
+            logError(e, {"Server": after.guild.id})
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
@@ -110,6 +118,7 @@ class WatchStatus(commands.Cog):
         statusChannel = self.checkStatus(before, str(before.activity), str(after.activity))
 
         if (statusChannel):
+            logInfo(f"Watched user {after.id} New Status: \"{after.activity}\"")
             await statusChannel.send(f"> {after.activity}")
             self.save_status(after.id, str(after.activity))
             
