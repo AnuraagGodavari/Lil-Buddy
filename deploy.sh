@@ -29,6 +29,11 @@ if [ ! -f ".env" ] ; then
 
 fi
 
+#Make directories that we want to mount onto the container
+if [ ! -d "./Logs" ] ; then
+	mkdir Logs
+fi
+
 #Build the docker image
 sudo docker build -t lilbuddy .
 
@@ -42,7 +47,7 @@ After=multi-user.target
 Type=simple
 Restart=always
 
-ExecStart=/usr/bin/docker run --name lilbuddy --rm lilbuddy
+ExecStart=/usr/bin/docker run -v /home/anuraag/Git/Lil-Buddy/Logs:/Lil-Buddy-App/Logs --name lilbuddy --rm lilbuddy
 ExecStop=-/usr/bin/docker stop lilbuddy
 
 [Install]
