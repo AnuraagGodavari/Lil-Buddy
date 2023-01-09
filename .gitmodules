@@ -1,0 +1,3 @@
+[submodule "Lil-Buddy/VakLogger"]
+	path = Lil-Buddy/VakLogger
+	url = git@github.com:AnuraagGodavari/Vak-Logger.git

@@ -7,6 +7,7 @@ from discord.ext import commands
 
 from common import *
 from database import *
+from VakLogger import *
 
 #The bot
 lilbuddy = commands.Bot(command_prefix = 'lb.', intents = discord.Intents().all())
@@ -15,7 +16,7 @@ lilbuddy = commands.Bot(command_prefix = 'lb.', intents = discord.Intents().all(
 @lilbuddy.event
 async def on_ready():
 	""" Detects when the bot has been fully loaded and is online """
-	print("Bot ready!")
+	logInitial("Bot Ready!")
 
 @lilbuddy.command()
 async def load(ctx, cog):
@@ -32,7 +33,7 @@ async def ping(ctx):
 
 async def setup():
 	
-	for filename in os.listdir(f"{pwdir}/Cogs"):
+	for filename in os.listdir(cogsDir):
 		if filename.endswith(".py"):
 			await lilbuddy.load_extension(f"Cogs.{filename[:-3]}")
 

@@ -5,6 +5,7 @@ from discord.ext import commands
 
 from common import *
 from database import *
+from VakLogger import *
 
 class WatchStatus(commands.Cog):
     """ A cog that allows its client bot to watch member statuses """
@@ -55,6 +56,7 @@ class WatchStatus(commands.Cog):
         status_channel_id = cursor.fetchone()
 
         if (status_channel_id == None): return False
+        logInfo(f"Watched user {user.id} changed their activity")
         status_channel_id = status_channel_id[0]
         
         #Check if this is the right server
@@ -73,8 +75,34 @@ class WatchStatus(commands.Cog):
         return False
 
     @commands.Cog.listener()
+    async def on_presence_update(self, before, after):
+        """
+        Checks if a member has changed their profile.
+
+        Args:
+            before (Member): the member's old info
+            after (Member): the member's new info
+        """
+
+        if not (after.activity): return
+
+        try:
+            statusChannel = self.checkStatus(before, str(before.activity), str(after.activity))
+
+            if (statusChannel):
+                logInfo(f"Watched user {after.id} New Status: \"{after.activity}\"")
+                await statusChannel.send(f"> {after.activity}")
+                self.save_status(after.id, str(after.activity))
+        
+        except Exception as e:
+            logInfo(f"Something went wrong when checking {after.id} status")
+            logError(e, {"Server": after.guild.id})
+
+    @commands.Cog.listener()
     async def on_member_update(self, before, after):
         """
+        IMPORTANT: This is for pre-discord 2.0, where this function tracked the same things as on_presence_update() does now.
+
         Checks if a member has changed their profile.
 
         Args:
@@ -87,6 +115,7 @@ class WatchStatus(commands.Cog):
         statusChannel = self.checkStatus(before, str(before.activity), str(after.activity))
 
         if (statusChannel):
+            logInfo(f"Watched user {after.id} New Status: \"{after.activity}\"")
             await statusChannel.send(f"> {after.activity}")
             self.save_status(after.id, str(after.activity))
             
